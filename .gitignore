@@ -23,6 +23,7 @@ next-env.d.ts
 # misc
 .DS_Store
 *.pem
+.vscode
 
 # debug
 npm-debug.log*
@@ -40,3 +41,6 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+#dev
+src/pages/dev.tsx
