@@ -2,7 +2,7 @@ import Image from "next/image"
 
 import {useState, type FC} from "react"
 
-interface IImage {
+interface IImage extends React.HTMLAttributes<HTMLImageElement> {
   src: string
   alt: string
 }
@@ -11,7 +11,13 @@ const NatImage: FC<IImage> = ({src, alt, ...props}) => {
   const [ratio, setRatio] = useState(16 / 9)
 
   return (
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     <Image
+      width={1080}
+      height={1080 / ratio}
+      src={src}
+      alt={alt}
       onLoadingComplete={({
         naturalWidth,
         naturalHeight
@@ -25,8 +31,6 @@ const NatImage: FC<IImage> = ({src, alt, ...props}) => {
           setRatio(naturalWidth / naturalHeight)
         }
       }}
-      src={src}
-      alt={alt}
       {...props}
     />
   )
