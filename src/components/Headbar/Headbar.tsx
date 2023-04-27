@@ -1,5 +1,6 @@
-import {Box, Button, Group, Text} from "@mantine/core"
+import {Box, Group, Text} from "@mantine/core"
 import useStyles from "./Headbar.style"
+import {Button} from "../Button"
 
 const Sheet = () => {
   const {classes} = useStyles()
