@@ -9,6 +9,7 @@ import {type Session} from "next-auth"
 import "@/styles/globals.css"
 import Head from "next/head"
 import {Headbar} from "@/components/Headbar"
+import MyTheme from "@/utils/mantineTheme"
 
 const MyApp: AppType<{session: Session | null}> = ({
   Component,
@@ -23,7 +24,7 @@ const MyApp: AppType<{session: Session | null}> = ({
 
         <title>Dungeons & Dummies</title>
       </Head>
-      <MantineProvider withGlobalStyles withNormalizeCSS>
+      <MantineProvider theme={MyTheme} withGlobalStyles withNormalizeCSS>
         <SessionProvider session={session}>
           <Headbar />
 
