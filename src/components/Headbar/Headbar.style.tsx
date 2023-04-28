@@ -6,10 +6,15 @@ const useStyles = createStyles(theme => ({
     alignItems: "center",
     justifyContent: "space-between",
     height: rem(80),
-    paddingInline: "2.5rem"
+    paddingInline: "5vw",
+    gap: rem(16)
   },
   logo: {
-    fontSize: rem(32)
+    fontSize: rem(32),
+
+    [theme.fn.smallerThan("md")]: {
+      fontSize: rem(24)
+    }
   }
 }))
 

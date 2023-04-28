@@ -9,7 +9,7 @@ const Sheet = () => {
       <Text className={classes.logo} component="h1">
         NerdChess
       </Text>
-      <Group>
+      <Group noWrap>
         <Button>Login</Button>
         <Button>Sign Up</Button>
       </Group>
