@@ -11,6 +11,8 @@ const useStyles = createStyles(theme => ({
   },
   logo: {
     fontSize: rem(32),
+    textDecoration: "none",
+    color: "#000",
 
     [theme.fn.smallerThan("md")]: {
       fontSize: rem(24)
