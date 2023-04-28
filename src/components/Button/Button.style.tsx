@@ -17,12 +17,14 @@ const useStyles = createStyles(theme => ({
     boxShadow: theme.shadows.sm,
 
     ":hover": {
-      boxShadow: theme.shadows.md
+      boxShadow: theme.shadows.md,
+      transform: "translateY(-1px)"
     },
 
     ":active": {
       transition: "all .1s ease-in-out",
-      boxShadow: theme.shadows.xs
+      boxShadow: theme.shadows.xs,
+      transform: "translateY(1px)"
     },
 
     [theme.fn.smallerThan("md")]: {
