@@ -1,18 +1,40 @@
-import {
-  Container,
-  Group,
-  NumberInput,
-  Stack,
-  TextInput,
-  Textarea
-} from "@mantine/core"
+import {useState} from "react"
+
+import {Container, Group, NumberInput, TextInput} from "@mantine/core"
 
 import {Avatar} from "../Avatar"
 
 import useStyles from "./Sheet.style"
+import expByLvl from "@/utils/levelUtils"
+
+interface IStatus {
+  exp: number
+  lvl: number
+}
 
 const Sheet = () => {
+  const [status, setStatus] = useState<IStatus>({
+    lvl: 1,
+    exp: 0
+  })
   const {classes} = useStyles()
+
+  const handleChange = (value: number | "") => {
+    if (value === "") return setStatus({lvl: 1, exp: 0})
+
+    setStatus(prev => ({...prev, exp: value}))
+
+    if (value >= (expByLvl[49] as number))
+      return setStatus(prev => ({...prev, lvl: 50}))
+
+    for (let i = 0; i < expByLvl.length; i++) {
+      const minorExp = expByLvl[i] as number
+      const maxExp = expByLvl[i + 1] as number
+      if (value >= minorExp && value < maxExp) {
+        setStatus(prev => ({...prev, lvl: i + 1}))
+      }
+    }
+  }
 
   return (
     <Container className={classes.sheet}>
@@ -33,6 +55,7 @@ const Sheet = () => {
               className={classes.lvl}
               hideControls
               variant="unstyled"
+              value={status.lvl}
             />
             <NumberInput
               label="Experiência"
@@ -41,6 +64,8 @@ const Sheet = () => {
               className={classes.xp}
               hideControls
               variant="unstyled"
+              value={status.exp}
+              onChange={value => handleChange(value)}
             />
           </Group>
         </Group>
