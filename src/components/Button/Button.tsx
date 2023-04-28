@@ -1,8 +1,15 @@
+import {type FC} from "react"
 import useStyles from "./Button.style"
 
-const Sheet = ({children}: {children: React.ReactNode}) => {
+type TButton = React.HTMLAttributes<HTMLButtonElement>
+
+const Button: FC<TButton> = ({children, ...props}) => {
   const {classes} = useStyles()
-  return <button className={classes.button}>{children}</button>
+  return (
+    <button {...props} className={classes.button}>
+      {children}
+    </button>
+  )
 }
 
-export default Sheet
+export default Button

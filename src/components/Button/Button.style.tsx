@@ -23,6 +23,12 @@ const useStyles = createStyles(theme => ({
     ":active": {
       transition: "all .1s ease-in-out",
       boxShadow: theme.shadows.xs
+    },
+
+    [theme.fn.smallerThan("md")]: {
+      fontSize: rem(14),
+      width: rem(72),
+      height: rem(28)
     }
   }
 }))
