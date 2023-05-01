@@ -2,13 +2,14 @@ import {Box, Group, Text} from "@mantine/core"
 import useStyles from "./Headbar.style"
 import {Button} from "../Button"
 import Link from "next/link"
+import {Image} from "../Image"
 
 const Sheet = () => {
   const {classes} = useStyles()
   return (
     <Box className={classes.nav} component="nav">
-      <Link className={classes.logo} href="/">
-        <Text component="h1">NerdChess</Text>
+      <Link className={classes.logoWrapper} href="/">
+        <Image className={classes.logo} alt="" src="/logo.svg" />
       </Link>
       <Group noWrap>
         <Button>Login</Button>

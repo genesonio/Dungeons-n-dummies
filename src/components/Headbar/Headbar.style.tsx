@@ -5,18 +5,18 @@ const useStyles = createStyles(theme => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    height: rem(80),
+    height: rem(120),
     paddingInline: "5vw",
     gap: rem(16)
   },
-  logo: {
-    fontSize: rem(32),
-    textDecoration: "none",
-    color: "#000",
 
-    [theme.fn.smallerThan("md")]: {
-      fontSize: rem(24)
-    }
+  logoWrapper: {
+    width: rem(80),
+    position: "relative"
+  },
+
+  logo: {
+    objectFit: "contain"
   }
 }))
 
