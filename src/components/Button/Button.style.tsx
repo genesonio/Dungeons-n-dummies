@@ -10,7 +10,7 @@ const useStyles = createStyles(theme => ({
 
     cursor: "pointer",
 
-    color: "#999",
+    color: theme.colors.gray[0],
 
     transition: "all .3s ease-in-out",
 
