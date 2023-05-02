@@ -1,6 +1,11 @@
 import { type MantineThemeOverride } from "@mantine/core"
 
 const MyTheme: MantineThemeOverride = {
+  colors: {
+    gray: ['#d2d2d2'],
+    grape: ['#6666f1', '#5050f8'],
+    yellow: ['#ffaa4a']
+  },
   shadows: {
     sm: "rgba(0, 0, 0, 0.3) 2px 3px 4px 2px",
     md: "rgba(0, 0, 0, 0.3) 2px 3px 8px 4px",
@@ -14,7 +19,7 @@ const MyTheme: MantineThemeOverride = {
     },
     InputWrapper: {
       styles: () => ( {
-        label: { color: '#696969' }
+        label: { color: '#d2d2d2' }
       } )
     }
   }
