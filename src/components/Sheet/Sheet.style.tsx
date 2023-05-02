@@ -6,27 +6,19 @@ const useStyles = createStyles(theme => ({
     marginTop: rem(24)
   },
   picture: {
-    [theme.fn.smallerThan("md")]: {
-      margin: "auto"
-    }
+    width: rem(192),
+    height: rem(192),
+    margin: "auto",
+    borderRadius: "9999px"
   },
   charHead: {
-    [theme.fn.smallerThan("md")]: {
-      justifyContent: "space-between"
-    }
+    justifyContent: "space-between"
   },
   firstInfo: {
     width: "40vw"
   },
-  status: {
-    justifyContent: "space-between",
-    width: "100%"
-  },
-  lvl: {
-    width: "47%"
-  },
-  xp: {
-    width: "47%"
+  skills: {
+    height: rem(96)
   }
 }))
 
