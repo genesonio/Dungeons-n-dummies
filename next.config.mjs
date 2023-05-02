@@ -17,14 +17,6 @@ const config = {
   i18n: {
     locales: ["en"],
     defaultLocale: "en"
-  },
-  images: {
-    remotePatterns: [
-      {
-        hostname: "picsum.photos",
-        protocol: "https"
-      }
-    ]
   }
 }
 export default config
