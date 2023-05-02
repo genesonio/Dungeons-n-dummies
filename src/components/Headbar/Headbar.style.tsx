@@ -8,8 +8,6 @@ const useStyles = createStyles(theme => ({
     height: rem(120),
     paddingInline: "5vw",
     gap: rem(16)
-
-    //backgroundColor: "#1e1e1e"
   },
 
   logoWrapper: {
