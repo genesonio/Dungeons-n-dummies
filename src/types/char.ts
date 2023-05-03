@@ -35,6 +35,7 @@ interface IItems {
 
 export interface ICharacter {
   id: string
+  avatar: string
   name: string
   race: string
   stats: IStats
