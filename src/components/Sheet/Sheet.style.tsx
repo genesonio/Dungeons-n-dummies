@@ -41,7 +41,16 @@ const useStyles = createStyles(theme => ({
     width: "40vw"
   },
   skills: {
-    height: rem(96)
+    color: theme.colors.gray[1]
+  },
+  skillsS: {
+    height: rem(240)
+  },
+  skill: {
+    color: theme.colors.yellow[0]
+  },
+  skillD: {
+    color: theme.colors.gray[0]
   }
 }))
 
