@@ -31,12 +31,12 @@ const Sheet = () => {
 
   useEffect(() => {
     setChar(character)
-    setStatus(character.level)
+    setStatus(char.level)
   }, [])
 
   const {classes} = useStyles()
 
-  const handleChange = (value: number | "") => {
+  const handleExpChange = (value: number | "") => {
     if (value === "") return setStatus({level: 1, exp: 0})
 
     setStatus(prev => ({...prev, exp: value}))
@@ -48,16 +48,49 @@ const Sheet = () => {
       const minorExp = expByLvl[i] as number
       const maxExp = expByLvl[i + 1] as number
       if (value >= minorExp && value < maxExp) {
-        setStatus(prev => ({...prev, lvl: i + 1}))
+        setStatus(prev => ({...prev, level: i + 1}))
       }
     }
   }
 
+  const handleStatChange = (
+    statName: keyof ICharacter["stats"],
+    value: number | ""
+  ) => {
+    setChar(prevChar => ({
+      ...prevChar,
+      stats: {
+        ...prevChar.stats,
+        [statName]: value === "" ? 0 : value
+      }
+    }))
+  }
+
+  const handleCharChange = (statChar: keyof ICharacter, value: string) => {
+    setChar(prev => ({
+      ...prev,
+      [statChar]: value
+    }))
+  }
+
   if (!char) return <Loader />
+
+  const {stats, skills} = char
+
+  const calculateBonus = (stat: number) => Math.floor(stat / 3)
 
   return (
     <Container className={classes.sheet}>
-      <Avatar alt="" variant="outline" src={null} className={classes.picture} />
+      <Avatar
+        alt={
+          char.avatar === ""
+            ? "Placeholder de imagem"
+            : `Representação do personagem ${char.name}`
+        }
+        variant="outline"
+        src={char.avatar}
+        className={classes.picture}
+      />
 
       <Stack className={classes.stats}>
         <Group>
@@ -65,27 +98,15 @@ const Sheet = () => {
             <NumberInput
               variant="unstyled"
               label="HP"
-              value={char.stats.currentHp}
-              max={char.stats.hp}
-              onChange={e =>
-                setChar(prev => ({
-                  ...prev,
-                  stats: {
-                    ...prev.stats,
-                    currentHp: e === "" ? 0 : e
-                  }
-                }))
-              }
+              value={stats.currentHp}
+              max={stats.hp}
+              onChange={num => handleStatChange("currentHp", num)}
             />
             <Progress
-              label={
-                char.stats.currentHp.toString() +
-                " / " +
-                char.stats.hp.toString()
-              }
+              label={`${stats.currentHp} / ${stats.hp}`}
               color="red"
               size="xl"
-              value={(100 / char.stats.hp) * char.stats.currentHp}
+              value={(100 / stats.hp) * stats.currentHp}
             />
           </Stack>
           <Stack className={classes.bars} spacing="xs">
@@ -94,29 +115,17 @@ const Sheet = () => {
                 className={classes.sp}
                 variant="unstyled"
                 label="SP"
-                value={char.stats.currentSp}
-                max={char.stats.sp}
-                onChange={e =>
-                  setChar(prev => ({
-                    ...prev,
-                    stats: {
-                      ...prev.stats,
-                      currentSp: e === "" ? 0 : e
-                    }
-                  }))
-                }
+                value={stats.currentSp}
+                max={stats.sp}
+                onChange={num => handleStatChange("currentSp", num)}
               />
-              <Text component="p">+ {Math.floor(5 / 3)}</Text>
+              <Text component="p">+ {calculateBonus(stats.sp)}</Text>
             </Group>
             <Progress
               color="blue"
-              label={
-                char.stats.currentSp.toString() +
-                " / " +
-                char.stats.sp.toString()
-              }
+              label={`${stats.currentSp} / ${stats.sp}`}
               size="xl"
-              value={(100 / char.stats.sp) * char.stats.currentSp}
+              value={(100 / stats.sp) * stats.currentSp}
             />
           </Stack>
         </Group>
@@ -126,33 +135,37 @@ const Sheet = () => {
             <NumberInput
               variant="unstyled"
               label="Força"
-              value={char.stats.str}
+              value={stats.str}
+              onChange={num => handleStatChange("str", num)}
             />
-            <Text component="p">+ {Math.floor(char.stats.str / 3)}</Text>
+            <Text component="p">+ {calculateBonus(stats.str)}</Text>
           </Stack>
           <Stack className={classes.attributes}>
             <NumberInput
               variant="unstyled"
               label="Destreza"
-              value={char.stats.dex}
+              value={stats.dex}
+              onChange={num => handleStatChange("dex", num)}
             />
-            <Text component="p">+ {Math.floor(char.stats.dex / 3)}</Text>
+            <Text component="p">+ {calculateBonus(stats.dex)}</Text>
           </Stack>
           <Stack className={classes.attributes}>
             <NumberInput
               variant="unstyled"
               label="Inteligência"
-              value={char.stats.int}
+              value={stats.int}
+              onChange={num => handleStatChange("int", num)}
             />
-            <Text component="p">+ {Math.floor(char.stats.int / 3)}</Text>
+            <Text component="p">+ {calculateBonus(stats.int)}</Text>
           </Stack>
           <Stack className={classes.attributes}>
             <NumberInput
               variant="unstyled"
               label="Carisma"
-              value={char.stats.char}
+              value={stats.char}
+              onChange={num => handleStatChange("char", num)}
             />
-            <Text component="p">+ {Math.floor(char.stats.char / 3)}</Text>
+            <Text component="p">+ {calculateBonus(stats.char)}</Text>
           </Stack>
         </Group>
       </Stack>
@@ -176,7 +189,7 @@ const Sheet = () => {
           hideControls
           variant="unstyled"
           value={status.exp}
-          onChange={value => handleChange(value)}
+          onChange={value => handleExpChange(value)}
         />
         <TextInput
           className={classes.firstInfo}
@@ -184,7 +197,7 @@ const Sheet = () => {
           placeholder="Nome do personagem"
           variant="unstyled"
           value={char.name}
-          onChange={e => setChar(prev => ({...prev, name: e.target.value}))}
+          onChange={({target}) => handleCharChange("name", target.value)}
         />
         <TextInput
           className={classes.firstInfo}
@@ -192,7 +205,7 @@ const Sheet = () => {
           placeholder="Ancest. do personagem"
           variant="unstyled"
           value={char.race}
-          onChange={e => setChar(prev => ({...prev, race: e.target.value}))}
+          onChange={({target}) => handleCharChange("race", target.value)}
         />
         <TextInput
           className={classes.firstInfo}
@@ -200,7 +213,7 @@ const Sheet = () => {
           placeholder="Vocação do personagem"
           variant="unstyled"
           value={char.role}
-          onChange={e => setChar(prev => ({...prev, role: e.target.value}))}
+          onChange={({target}) => handleCharChange("role", target.value)}
         />
         <TextInput
           className={classes.firstInfo}
@@ -208,20 +221,24 @@ const Sheet = () => {
           placeholder="Entidade adorada pelo personagem"
           variant="unstyled"
           value={char.divinity}
-          onChange={e => setChar(prev => ({...prev, divinity: e.target.value}))}
+          onChange={({target}) => handleCharChange("divinity", target.value)}
         />
       </Group>
 
-      <ScrollArea.Autosize
-        scrollHideDelay={500}
-        scrollbarSize={8}
-        offsetScrollbars
-        className={classes.skills}
-      >
-        {character.skills.map(skill => (
-          <p key={skill.id}>{skill.name}</p>
-        ))}
-      </ScrollArea.Autosize>
+      <Stack spacing="xs">
+        <Text component="h1">Habilidades</Text>
+
+        <ScrollArea.Autosize
+          scrollHideDelay={500}
+          scrollbarSize={8}
+          offsetScrollbars
+          className={classes.skills}
+        >
+          {skills.map(skill => (
+            <TextInput variant="unstyled" key={skill.id} value={skill.name} />
+          ))}
+        </ScrollArea.Autosize>
+      </Stack>
     </Container>
   )
 }
