@@ -2,8 +2,8 @@ import { type MantineThemeOverride } from "@mantine/core"
 
 const MyTheme: MantineThemeOverride = {
   colors: {
-    gray: ['#d2d2d2'],
-    grape: ['#6666f1', '#5050f8'],
+    gray: ['#d2d2d2', '#aaa'],
+    grape: ['#6666f1', '#5050f8', '#000666'],
     yellow: ['#ffaa4a']
   },
   shadows: {
