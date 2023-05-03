@@ -20,6 +20,7 @@ import expByLvl from "@/utils/levelUtils"
 
 import {character} from "@/utils/tempChar"
 import type {ICharacter} from "@/types/char"
+import {objectEnumValues} from "@prisma/client/runtime"
 
 interface IStatus {
   exp: number
@@ -77,7 +78,7 @@ const Sheet = () => {
 
   if (!char) return <Loader />
 
-  const {stats, skills} = char
+  const {stats, skills, backpack} = char
 
   const calculateBonus = (stat: number) => Math.floor(stat / 3)
 
@@ -235,34 +236,79 @@ const Sheet = () => {
 
       <Divider color="white" label="Habilidades" labelPosition="center" />
 
-      <Stack className={classes.skills} spacing="xs">
-        <ScrollArea.Autosize
-          scrollHideDelay={500}
-          scrollbarSize={8}
-          offsetScrollbars
-          className={classes.skillsS}
-        >
-          <Accordion>
-            {skills.map(skill => (
-              <Accordion.Item key={skill.id} value={skill.name}>
-                <Accordion.Control className={classes.skill}>
-                  {skill.name}{" "}
-                  {skill.attribute ? <Text>Mod: {skill.attribute}</Text> : null}
-                </Accordion.Control>
-                <Accordion.Panel className={classes.skillD}>
-                  <Group>
-                    {skill.effect ? <Text>Efeito: {skill.effect}</Text> : null}
-                    <Text>Tipo: {skill.type}</Text>
-                  </Group>
-                  <Text>{skill.description}</Text>
-                </Accordion.Panel>
-              </Accordion.Item>
-            ))}
-          </Accordion>
-        </ScrollArea.Autosize>
-      </Stack>
+      <ScrollArea.Autosize
+        className={classes.skills}
+        scrollHideDelay={500}
+        scrollbarSize={8}
+        offsetScrollbars
+      >
+        <Accordion>
+          {skills.map(skill => (
+            <Accordion.Item key={skill.id} value={skill.name}>
+              <Accordion.Control className={classes.skill}>
+                {skill.name}{" "}
+                {skill.attribute ? <Text>Mod: {skill.attribute}</Text> : null}
+              </Accordion.Control>
+              <Accordion.Panel className={classes.skillD}>
+                <Group>
+                  {skill.effect ? <Text>Efeito: {skill.effect}</Text> : null}
+                  <Text>Tipo: {skill.type}</Text>
+                </Group>
+                <Text>{skill.description}</Text>
+              </Accordion.Panel>
+            </Accordion.Item>
+          ))}
+        </Accordion>
+      </ScrollArea.Autosize>
 
       <Divider color="white" label="Inventário" labelPosition="center" />
+
+      <ScrollArea.Autosize
+        className={classes.inventory}
+        scrollHideDelay={500}
+        scrollbarSize={8}
+        offsetScrollbars
+      >
+        <Accordion>
+          {backpack.map(item => (
+            <Accordion.Item key={item.id} value={item.name}>
+              <Accordion.Control className={classes.item}>
+                <Group className={classes.itemH} align="center">
+                  <Group>
+                    <Stack spacing={0}>
+                      <Text className={classes.itemN} component="h2">
+                        {item.name}
+                      </Text>
+                      {item.modifier ? <Text>Mod: {item.modifier}</Text> : null}
+                    </Stack>
+                    {typeof item.stat == "number" ? (
+                      <Text>+{item.stat}</Text>
+                    ) : null}
+                    {typeof item.stat == "string" ? (
+                      <Text>{item.stat}</Text>
+                    ) : null}
+                  </Group>
+                  <Group>
+                    x
+                    <NumberInput
+                      className={classes.itemQuantity}
+                      variant="unstyled"
+                      value={item.quantity}
+                    />
+                  </Group>
+                </Group>
+              </Accordion.Control>
+              <Accordion.Panel className={classes.itemDesc}>
+                {item.description ? (
+                  <Text component="p">{item.description}</Text>
+                ) : (
+                  <Text component="p">Este item não tem descrição</Text>
+                )}
+              </Accordion.Panel>
+            </Accordion.Item>
+          ))}
+        </Accordion>
+      </ScrollArea.Autosize>
     </Container>
   )
 }

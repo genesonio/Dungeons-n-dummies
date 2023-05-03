@@ -41,15 +41,30 @@ const useStyles = createStyles(theme => ({
     width: "40vw"
   },
   skills: {
-    color: theme.colors.gray[1]
-  },
-  skillsS: {
-    height: rem(240)
+    height: rem(320)
   },
   skill: {
     color: theme.colors.yellow[0]
   },
   skillD: {
+    color: theme.colors.gray[0]
+  },
+  inventory: {
+    height: rem(320)
+  },
+  item: {
+    color: theme.colors.yellow[0]
+  },
+  itemH: {
+    justifyContent: "space-between"
+  },
+  itemN: {
+    maxWidth: rem(120)
+  },
+  itemQuantity: {
+    width: rem(32)
+  },
+  itemDesc: {
     color: theme.colors.gray[0]
   }
 }))
