@@ -16,19 +16,14 @@ import {
 } from "@mantine/core"
 
 import useStyles from "./Sheet.style"
+
 import expByLvl from "@/utils/levelUtils"
-
 import {character} from "@/utils/tempChar"
-import type {ICharacter} from "@/types/char"
-import {objectEnumValues} from "@prisma/client/runtime"
 
-interface IStatus {
-  exp: number
-  level: number
-}
+import type {ICharacter, ILevel} from "@/types/char"
 
 const Sheet = () => {
-  const [status, setStatus] = useState<IStatus>({level: 1, exp: 0})
+  const [status, setStatus] = useState<ILevel>({level: 1, exp: 0})
 
   const [char, setChar] = useState<ICharacter>(character)
 
