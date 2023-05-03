@@ -9,7 +9,7 @@ export interface IStats {
   char: number
 }
 
-interface ILevel {
+export interface ILevel {
   exp: number
   level: number
 }
