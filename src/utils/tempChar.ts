@@ -87,7 +87,7 @@ export const character: ICharacter = {
       name: "Incensário",
       quantity: 1,
       description: 'Amuleto Sagrado, pequeno incensário com uma corrente presa no topo',
-      modifier: "Car P",
+      modifier: "Carisma",
     },
     {
       id: "e57f50ad-e1b5-4d9c-9bfa-f5625c5a4bc4",
