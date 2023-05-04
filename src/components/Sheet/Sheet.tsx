@@ -2,6 +2,7 @@ import {useEffect, useState} from "react"
 
 import {
   Accordion,
+  ActionIcon,
   Avatar,
   Container,
   Divider,
@@ -14,6 +15,7 @@ import {
   Text,
   TextInput
 } from "@mantine/core"
+import {IconPencil, IconX} from "@tabler/icons-react"
 
 import useStyles from "./Sheet.style"
 
@@ -72,17 +74,30 @@ const Sheet = () => {
   }
 
   const handleItemChange = (
-    itemKey: keyof IItem,
     index: number,
+    itemKey?: keyof IItem,
     value?: number | string
   ) => {
+    const remove = (index: number) => {
+      const item = char.backpack.at(index) as IItem
+      setChar(prev => ({
+        ...prev,
+        backpack: prev.backpack.filter(filterItem => filterItem.id != item.id)
+      }))
+    }
+
+    if (!itemKey && !value) remove(index)
+
     if (itemKey == "quantity" && typeof value == "number") {
+      if (value == 0) {
+        remove(index)
+        return
+      }
       setChar(prev => {
         const originalItem = prev.backpack.at(index) as IItem
         const filteredBackpack = prev.backpack.filter(
           filterItem => filterItem.id != originalItem.id
         )
-
         const changedItem: IItem = {...originalItem, [itemKey]: value}
 
         filteredBackpack.splice(index, 0, changedItem)
@@ -92,6 +107,7 @@ const Sheet = () => {
           backpack: filteredBackpack
         }
       })
+      return
     }
   }
 
@@ -112,7 +128,6 @@ const Sheet = () => {
         variant="outline"
         src={char.avatar}
         className={classes.picture}
-        onClick={() => console.log(inventory)}
       />
 
       <Divider color="white" label="Condição" labelPosition="center" />
@@ -266,8 +281,13 @@ const Sheet = () => {
           {skills.map(skill => (
             <Accordion.Item key={skill.id} value={skill.name}>
               <Accordion.Control className={classes.skill}>
-                {skill.name}{" "}
-                {skill.attribute ? <Text>Mod: {skill.attribute}</Text> : null}
+                <Group align="center">
+                  {skill.name}
+                  {skill.free ? <Text component="p">Sem Custo</Text> : null}
+                </Group>
+                {skill.attribute ? (
+                  <Text component="p">Mod: {skill.attribute}</Text>
+                ) : null}
               </Accordion.Control>
               <Accordion.Panel className={classes.skillD}>
                 <Group>
@@ -314,12 +334,30 @@ const Sheet = () => {
                       className={classes.itemQuantity}
                       variant="unstyled"
                       value={item.quantity}
-                      onChange={num => handleItemChange("quantity", index, num)}
+                      onChange={num => handleItemChange(index, "quantity", num)}
                     />
                   </Group>
                 </Group>
               </Accordion.Control>
               <Accordion.Panel className={classes.itemDesc}>
+                <Group className={classes.config}>
+                  <ActionIcon
+                    className={classes.configButton}
+                    title="Editar item"
+                    variant="transparent"
+                  >
+                    <IconPencil stroke={1.5} />
+                  </ActionIcon>
+
+                  <ActionIcon
+                    className={classes.configButton}
+                    title="Excluir item"
+                    variant="transparent"
+                    onClick={() => handleItemChange(index)}
+                  >
+                    <IconX stroke={1.5} />
+                  </ActionIcon>
+                </Group>
                 {item.description ? (
                   <Text component="p">{item.description}</Text>
                 ) : (
