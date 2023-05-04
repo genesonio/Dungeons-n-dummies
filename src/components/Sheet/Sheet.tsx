@@ -20,7 +20,7 @@ import useStyles from "./Sheet.style"
 import expByLvl from "@/utils/levelUtils"
 import {character} from "@/utils/tempChar"
 
-import type {ICharacter, ILevel} from "@/types/char"
+import type {ICharacter, IItem, ILevel} from "@/types/char"
 
 const Sheet = () => {
   const [status, setStatus] = useState<ILevel>({level: 1, exp: 0})
@@ -71,9 +71,33 @@ const Sheet = () => {
     }))
   }
 
+  const handleItemChange = (
+    itemKey: keyof IItem,
+    index: number,
+    value?: number | string
+  ) => {
+    if (itemKey == "quantity" && typeof value == "number") {
+      setChar(prev => {
+        const originalItem = prev.backpack.at(index) as IItem
+        const filteredBackpack = prev.backpack.filter(
+          filterItem => filterItem.id != originalItem.id
+        )
+
+        const changedItem: IItem = {...originalItem, [itemKey]: value}
+
+        filteredBackpack.splice(index, 0, changedItem)
+
+        return {
+          ...prev,
+          backpack: filteredBackpack
+        }
+      })
+    }
+  }
+
   if (!char) return <Loader />
 
-  const {stats, skills, backpack} = char
+  const {stats, skills, backpack: inventory} = char
 
   const calculateBonus = (stat: number) => Math.floor(stat / 3)
 
@@ -88,6 +112,7 @@ const Sheet = () => {
         variant="outline"
         src={char.avatar}
         className={classes.picture}
+        onClick={() => console.log(inventory)}
       />
 
       <Divider color="white" label="Condição" labelPosition="center" />
@@ -265,7 +290,7 @@ const Sheet = () => {
         offsetScrollbars
       >
         <Accordion>
-          {backpack.map(item => (
+          {inventory.map((item, index) => (
             <Accordion.Item key={item.id} value={item.name}>
               <Accordion.Control className={classes.item}>
                 <Group className={classes.itemH} align="center">
@@ -289,6 +314,7 @@ const Sheet = () => {
                       className={classes.itemQuantity}
                       variant="unstyled"
                       value={item.quantity}
+                      onChange={num => handleItemChange("quantity", index, num)}
                     />
                   </Group>
                 </Group>
