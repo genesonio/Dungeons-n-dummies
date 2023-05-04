@@ -22,7 +22,7 @@ import useStyles from "./Sheet.style"
 import expByLvl from "@/utils/levelUtils"
 import {character} from "@/utils/tempChar"
 
-import type {ICharacter, IItem, ILevel} from "@/types/char"
+import type {ICharacter, IItem, ILevel, ISkill} from "@/types/char"
 
 const Sheet = () => {
   const [status, setStatus] = useState<ILevel>({level: 1, exp: 0})
@@ -109,6 +109,16 @@ const Sheet = () => {
       })
       return
     }
+  }
+
+  const handleSkillChange = (index: number) => {
+    const skill = char.skills.at(index) as ISkill
+    setChar(prev => {
+      return {
+        ...prev,
+        skills: prev.skills.filter(filterSkill => filterSkill.id != skill.id)
+      }
+    })
   }
 
   if (!char) return <Loader />
@@ -278,7 +288,7 @@ const Sheet = () => {
         offsetScrollbars
       >
         <Accordion>
-          {skills.map(skill => (
+          {skills.map((skill, index) => (
             <Accordion.Item key={skill.id} value={skill.name}>
               <Accordion.Control className={classes.skill}>
                 <Group align="center">
@@ -290,6 +300,24 @@ const Sheet = () => {
                 ) : null}
               </Accordion.Control>
               <Accordion.Panel className={classes.skillD}>
+                <Group className={classes.config}>
+                  <ActionIcon
+                    className={classes.configButton}
+                    title="Editar habilidade"
+                    variant="transparent"
+                  >
+                    <IconPencil stroke={1.5} />
+                  </ActionIcon>
+
+                  <ActionIcon
+                    className={classes.configButton}
+                    title="Excluir habilidade"
+                    variant="transparent"
+                    onClick={() => handleSkillChange(index)}
+                  >
+                    <IconX stroke={1.5} />
+                  </ActionIcon>
+                </Group>
                 <Group>
                   {skill.effect ? <Text>Efeito: {skill.effect}</Text> : null}
                   <Text>Tipo: {skill.type}</Text>
