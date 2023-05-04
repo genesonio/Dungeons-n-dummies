@@ -124,7 +124,7 @@ export const character: ICharacter = {
       description: 'Cura 2 de vida'
     },
     {
-      id: '4',
+      id: '666',
       name: "udubom",
       quantity: 10,
       stat: '2hp 1sp',

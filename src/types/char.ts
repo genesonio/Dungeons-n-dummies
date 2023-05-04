@@ -24,7 +24,7 @@ interface ISkill {
   free: boolean
 }
 
-interface IItems {
+export interface IItem {
   id: string
   name: string
   quantity: number
@@ -42,7 +42,7 @@ export interface ICharacter {
   level: ILevel
   role: string
   skills: ISkill[]
-  backpack: IItems[]
-  armor: IItems[]
+  backpack: IItem[]
+  armor: IItem[]
   divinity?: string
 }
