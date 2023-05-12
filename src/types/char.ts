@@ -38,8 +38,8 @@ export interface ICharacter {
   avatar: string
   name: string
   race: string
-  stats: IStats
-  level: ILevel
+  stats: object
+  level: object
   role: string
   skills: ISkill[]
   backpack: IItem[]
