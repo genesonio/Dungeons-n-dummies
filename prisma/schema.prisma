@@ -55,7 +55,7 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
-    characters    ICharacter[]
+    characters    Character[]
 }
 
 model VerificationToken {
@@ -67,7 +67,7 @@ model VerificationToken {
     @@map("verificationtokens")
 }
 
-model ICharacter {
+model Character {
     id         String @id @default(auto()) @map("_id") @db.ObjectId
     avatar     String
     name       String
@@ -83,7 +83,7 @@ model ICharacter {
     author    User     @relation(fields: [userId], references: [id])
 }
 
-model IItem {
+model Item {
     id           String @id @default(auto()) @map("_id") @db.ObjectId
     name         String
     quantity     Int
