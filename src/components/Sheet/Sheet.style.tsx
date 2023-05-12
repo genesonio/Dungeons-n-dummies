@@ -66,6 +66,13 @@ const useStyles = createStyles(theme => ({
   },
   itemDesc: {
     color: theme.colors.gray[0]
+  },
+  config: {
+    width: "100%",
+    justifyContent: "flex-end"
+  },
+  configButton: {
+    color: theme.colors.yellow[0]
   }
 }))
 

@@ -14,7 +14,7 @@ export interface ILevel {
   level: number
 }
 
-interface ISkill {
+export interface ISkill {
   id: string
   name: string
   type: string

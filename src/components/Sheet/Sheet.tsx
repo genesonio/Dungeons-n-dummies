@@ -2,6 +2,7 @@ import {useEffect, useState} from "react"
 
 import {
   Accordion,
+  ActionIcon,
   Avatar,
   Container,
   Divider,
@@ -14,13 +15,14 @@ import {
   Text,
   TextInput
 } from "@mantine/core"
+import {IconPencil, IconX} from "@tabler/icons-react"
 
 import useStyles from "./Sheet.style"
 
 import expByLvl from "@/utils/levelUtils"
 import {character} from "@/utils/tempChar"
 
-import type {ICharacter, IItem, ILevel} from "@/types/char"
+import type {ICharacter, IItem, ILevel, ISkill} from "@/types/char"
 
 const Sheet = () => {
   const [status, setStatus] = useState<ILevel>({level: 1, exp: 0})
@@ -72,17 +74,30 @@ const Sheet = () => {
   }
 
   const handleItemChange = (
-    itemKey: keyof IItem,
     index: number,
+    itemKey?: keyof IItem,
     value?: number | string
   ) => {
+    const remove = (index: number) => {
+      const item = char.backpack.at(index) as IItem
+      setChar(prev => ({
+        ...prev,
+        backpack: prev.backpack.filter(filterItem => filterItem.id != item.id)
+      }))
+    }
+
+    if (!itemKey && !value) remove(index)
+
     if (itemKey == "quantity" && typeof value == "number") {
+      if (value == 0) {
+        remove(index)
+        return
+      }
       setChar(prev => {
         const originalItem = prev.backpack.at(index) as IItem
         const filteredBackpack = prev.backpack.filter(
           filterItem => filterItem.id != originalItem.id
         )
-
         const changedItem: IItem = {...originalItem, [itemKey]: value}
 
         filteredBackpack.splice(index, 0, changedItem)
@@ -92,7 +107,18 @@ const Sheet = () => {
           backpack: filteredBackpack
         }
       })
+      return
     }
+  }
+
+  const handleSkillChange = (index: number) => {
+    const skill = char.skills.at(index) as ISkill
+    setChar(prev => {
+      return {
+        ...prev,
+        skills: prev.skills.filter(filterSkill => filterSkill.id != skill.id)
+      }
+    })
   }
 
   if (!char) return <Loader />
@@ -112,7 +138,6 @@ const Sheet = () => {
         variant="outline"
         src={char.avatar}
         className={classes.picture}
-        onClick={() => console.log(inventory)}
       />
 
       <Divider color="white" label="Condição" labelPosition="center" />
@@ -263,13 +288,36 @@ const Sheet = () => {
         offsetScrollbars
       >
         <Accordion>
-          {skills.map(skill => (
+          {skills.map((skill, index) => (
             <Accordion.Item key={skill.id} value={skill.name}>
               <Accordion.Control className={classes.skill}>
-                {skill.name}{" "}
-                {skill.attribute ? <Text>Mod: {skill.attribute}</Text> : null}
+                <Group align="center">
+                  {skill.name}
+                  {skill.free ? <Text component="p">Sem Custo</Text> : null}
+                </Group>
+                {skill.attribute ? (
+                  <Text component="p">Mod: {skill.attribute}</Text>
+                ) : null}
               </Accordion.Control>
               <Accordion.Panel className={classes.skillD}>
+                <Group className={classes.config}>
+                  <ActionIcon
+                    className={classes.configButton}
+                    title="Editar habilidade"
+                    variant="transparent"
+                  >
+                    <IconPencil stroke={1.5} />
+                  </ActionIcon>
+
+                  <ActionIcon
+                    className={classes.configButton}
+                    title="Excluir habilidade"
+                    variant="transparent"
+                    onClick={() => handleSkillChange(index)}
+                  >
+                    <IconX stroke={1.5} />
+                  </ActionIcon>
+                </Group>
                 <Group>
                   {skill.effect ? <Text>Efeito: {skill.effect}</Text> : null}
                   <Text>Tipo: {skill.type}</Text>
@@ -314,12 +362,30 @@ const Sheet = () => {
                       className={classes.itemQuantity}
                       variant="unstyled"
                       value={item.quantity}
-                      onChange={num => handleItemChange("quantity", index, num)}
+                      onChange={num => handleItemChange(index, "quantity", num)}
                     />
                   </Group>
                 </Group>
               </Accordion.Control>
               <Accordion.Panel className={classes.itemDesc}>
+                <Group className={classes.config}>
+                  <ActionIcon
+                    className={classes.configButton}
+                    title="Editar item"
+                    variant="transparent"
+                  >
+                    <IconPencil stroke={1.5} />
+                  </ActionIcon>
+
+                  <ActionIcon
+                    className={classes.configButton}
+                    title="Excluir item"
+                    variant="transparent"
+                    onClick={() => handleItemChange(index)}
+                  >
+                    <IconX stroke={1.5} />
+                  </ActionIcon>
+                </Group>
                 {item.description ? (
                   <Text component="p">{item.description}</Text>
                 ) : (
