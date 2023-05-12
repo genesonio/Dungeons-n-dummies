@@ -53,11 +53,39 @@ export const sheetRouter = createTRPCRouter({
       }),
       divinity:z.string().nullish()
     }))
-    .mutation(({ ctx, input }) => {
-      return {
-        
-      };
-    }),
+    .mutation( async ({ ctx, input }) => {
+      const sheet = await ctx.prisma.iCharacter.create({
+        data:{
+          avatar:input.avatar,
+          name:input.name,
+          race: input.race,
+          stats:{
+            hp:input.stats.hp,
+            sp:input.stats.sp,
+            currenteHp:input.stats.currentHp,
+            currentSp:input.stats.currentSp,
+            str:input.stats.str,
+            dex:input.stats.dex,
+            int:input.stats.int,
+            cha:input.stats.cha,
+          },
+          level:{
+            exp:input.level.exp,
+            level:input.level.level,
+          },
+          role:input.role,
+          skills:input.skills,
+          backpack:input.backpack,
+          armor: input.armor,
+          divinity:input.divinity,
+          author: {
+            connect:{id:ctx.session?.user?.id}
+          }
+        }
+      })
+      console.log("Sheet saved!")
+      return sheet
+    })
 
   
 });
