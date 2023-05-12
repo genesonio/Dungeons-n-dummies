@@ -55,6 +55,7 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
+    characters    ICharacter[]
 }
 
 model VerificationToken {
@@ -71,13 +72,15 @@ model ICharacter {
     avatar     String
     name       String
     race       String
-    stats      Int[]
-    level      Int[]
+    stats      Json[] 
+    level      Json[]
     role       String
     skills     Json[]
     backpack   Json[]
     armor      Json[]
     divinity   String?
+    userId     String   @db.ObjectId
+    author    User     @relation(fields: [userId], references: [id])
 }
 
 model IItem {
