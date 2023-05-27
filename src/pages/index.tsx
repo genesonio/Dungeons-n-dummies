@@ -1,7 +1,13 @@
+import {Sheet} from "@/components/Sheet";
 import {Home} from "./(Home)"
+import {useSession} from "next-auth/react"
 
 const Index = () => {
-  return <Home />
+  const { data:sessionData } = useSession();
+  if(!sessionData){
+    return <Home />
+  }
+    return<Sheet/>
 }
 
 export default Index

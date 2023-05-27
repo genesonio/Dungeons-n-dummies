@@ -76,9 +76,9 @@ export const sheetRouter = createTRPCRouter({
           backpack:input.backpack,
           armor: input.armor,
           divinity:input.divinity,
-        /*author: {
+          author: {
             connect:{id:ctx.session?.user?.id}
-          } */
+          } 
         }
       })
       console.log("Sheet saved!")
