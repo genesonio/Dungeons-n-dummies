@@ -15,23 +15,25 @@ import {
   Text,
   TextInput
 } from "@mantine/core"
+import { Button } from "../Button"
 import {IconPencil, IconX} from "@tabler/icons-react"
 
 import useStyles from "./Sheet.style"
 
 import expByLvl from "@/utils/levelUtils"
 import {character} from "@/utils/tempChar"
+import type {ICharacter} from "@/types/char"
+import { api } from "@/utils/api"
 
-import type {ICharacter, IItem, ILevel, ISkill} from "@/types/char"
 
 const Sheet = () => {
-  const [status, setStatus] = useState<ILevel>({level: 1, exp: 0})
+  const [status, setStatus] = useState({level: 1, exp: 0})
 
   const [char, setChar] = useState<ICharacter>(character)
 
   useEffect(() => {
     setChar(character)
-    setStatus(char.level)
+    setStatus({level: 1, exp: 0})
   }, [])
 
   const {classes} = useStyles()
@@ -127,6 +129,27 @@ const Sheet = () => {
 
   const calculateBonus = (stat: number) => Math.floor(stat / 3)
 
+  const {mutate} = api.sheet.createSheet.useMutation({onSuccess(data) {
+    console.log(data)
+  },})
+
+  const handleSheetSave = (char:ICharacter) => {
+    console.log(char)
+    mutate({
+      avatar:char.avatar,
+      name:char.name,
+      race:char.race,
+      stats:char.stats,
+      level:char.level,
+      exp:char.exp,
+      role:char.role,
+      skills:char.skills,
+      backpack:char.backpack,
+      armor:char.armor,
+      divinity:char.divinity,
+    })
+  }
+
   return (
     <Container className={classes.sheet}>
       <Avatar
@@ -215,10 +238,10 @@ const Sheet = () => {
           <NumberInput
             variant="unstyled"
             label="Carisma"
-            value={stats.char}
-            onChange={num => handleStatChange("char", num)}
+            value={stats.cha}
+            onChange={num => handleStatChange("cha", num)}
           />
-          <Text component="p">+ {calculateBonus(stats.char)}</Text>
+          <Text component="p">+ {calculateBonus(stats.cha)}</Text>
         </Stack>
         <NumberInput
           className={classes.firstInfo}
@@ -396,6 +419,7 @@ const Sheet = () => {
           ))}
         </Accordion>
       </ScrollArea.Autosize>
+      <Button  onClick={() => {handleSheetSave(char)}}>Save Sheet!</Button>
     </Container>
   )
 }

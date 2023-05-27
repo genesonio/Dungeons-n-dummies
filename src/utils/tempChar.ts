@@ -2,7 +2,7 @@ import type { ICharacter } from "@/types/char"
 
 export const character: ICharacter = {
   id: "e6c177d9-0f9c-41e3-b1b1-1436f7d6f04a",
-  avatar: '',
+  avatar: 'https://i.imgur.com/A6nHqGY.jpeg',
   name: "Aza'ael <Asinha>",
   race: "Aasimar",
   stats: {
@@ -13,12 +13,10 @@ export const character: ICharacter = {
     str: 1,
     dex: 3,
     int: 1,
-    char: 6,
+    cha: 6,
   },
-  level: {
     exp: 720,
     level: 2,
-  },
   role: "Sacerdote",
   skills: [
     {
